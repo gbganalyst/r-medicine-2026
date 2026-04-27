@@ -1,0 +1,271 @@
+---
+title: "bulkreadr: Fast, Reproducible Bulk Data Import for R-Based Research Workflows"
+subtitle: "R Medicine 2025 Talk"
+author:
+  - name: "Ezekiel Ogundepo"
+    url: https://gbganalyst.github.io/
+    affiliation:
+      - "African Institute for Mathematical Sciences (AIMS) <br>Rwanda"
+    affiliation-url: https://aims.ac.rw/
+toc: true
+toc-title: "On this page"
+toc-location: left
+number-sections: false
+highlight-style: pygments
+format: 
+  html:
+    theme: cosmo
+    page-layout: full # custom #article,
+    code-fold: false
+    code-tools: true
+    df-print: paged
+    smooth-scroll: true
+    link-external-icon: true
+    link-external-newwindow: true
+editor: visual
+execute:
+  error: false
+  eval: true
+  echo: true #fenced
+  freeze: auto
+knitr:
+  opts_chunk:
+    comment: "#>"
+    collapse: true
+    tidy: 'styler'
+    message: false
+    warning: false
+    #results: "markup" # asis, markup, hold
+    wrap: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## About the Package
+
+`bulkreadr` is a comprehensive R package designed to simplify and accelerate the process of reading and processing large volumes of data. The package allows users to effortlessly load data from multiple sources, such as Microsoft Excel, Google Sheets, CSV files, SPSS, and Stata. It efficiently reads multiple sheets from workbooks and handles bulk file imports, combining the data into organized data frames for further analysis and manipulation. Whether you're working with a single large dataset or multiple files in different formats, **bulkreadr** streamlines the data import process, making it faster, reproducible, and error-free.
+
+For installation and repository details, visit the <https://github.com/gbganalyst/bulkreadr>.
+
+## How to Load the Package
+
+Before using `bulkreadr`, ensure the package is installed. Then, load it into your R session:
+
+```{r}
+library(bulkreadr)
+```
+
+# Function Overview
+
+This section provides a concise overview of the different functions available in the `bulkreadr` package. These functions serve various purposes and are designed to handle importing of data in bulk.
+
+## Reading Excel Workbooks
+
+The function `read_excel_workbook()` reads all sheets from an Excel workbook and appends them into a single dataframe for analysis.
+
+```{r}
+# Load Excel workbook and read all sheets
+path <- "data/extdata/Diamonds.xlsx"
+read_excel_workbook(path = path, .id = "Location")
+```
+
+## Importing Multiple Excel Files from a Directory
+
+For directories with multiple Excel files,  `read_excel_files_from_dir()` reads all the workbooks in a given directory and appends them.
+
+```{r}
+# Import Excel files from the directory
+read_excel_files_from_dir("data/xlsxfolder")
+```
+
+## Handling CSV Files in Bulk
+
+The function `read_csv_files_from_dir()` loads all CSV files from a directory, making it easy to work with large amounts of data stored across multiple files.
+
+```{r}
+# Import CSV files from directory
+read_csv_files_from_dir("data/csvfolder", .id = "location")
+```
+
+## Google Sheets Integration
+
+The `read_gsheets()` function enables users to read and combine data from multiple Google Sheets, simplifying the process of importing distributed data from cloud sources.
+
+```{r}
+# Browse to see how the data in Google Sheets looks
+googlesheets4::gs4_browse("https://docs.google.com/spreadsheets/d/1izO0mHu3L9AMySQUXGDn9GPs1n-VwGFSEoAKGhqVQh0")
+
+# Specify the Google Sheets URL
+sheet_id <- "https://docs.google.com/spreadsheets/d/1izO0mHu3L9AMySQUXGDn9GPs1n-VwGFSEoAKGhqVQh0"
+
+# Import all sheets from the Google Sheet
+read_gsheets(ss = sheet_id, .id = "data_sheet")
+```
+
+## Labelled Data Import
+
+- `read_spss_data()`: Imports SPSS data files
+
+- `read_stata_data()`: Imports Stata data files
+
+Both functions import labelled data and convert labelled variables into factors, which is essential for effective data manipulation and analysis in R.
+
+### read_spss_data()
+
+```{r}
+# Read SPSS data without convert variable labels as column names
+spss_file_path <- "data/extdata/Wages.sav"
+wages_data <- read_spss_data(file = spss_file_path)
+wages_data
+```
+
+```{r}
+# Read SPSS data and convert variable labels as column names
+wages_data <- read_spss_data(file = spss_file_path, label = TRUE)
+wages_data
+```
+
+### read_stata_data()
+
+```{r}
+# Read Stata data without converting labels
+stata_file_path <- "data/extdata/Wages.dta"
+data <- read_stata_data(file = stata_file_path)
+data
+```
+
+```{r}
+# Read Stata data and convert variable labels as column names
+data <- read_stata_data(file = stata_file_path, label = TRUE)
+data
+```
+
+## Data Quality and Missing Values
+
+### Generating Data Dictionaries
+
+The `generate_dictionary()` function creates a comprehensive data dictionary from an imported labelled dataframe, which is essential for documenting and understanding your dataset’s structure.
+
+```{r}
+generate_dictionary(wages_data) |> 
+  view()
+```
+
+The `look_for()` function mimics the Stata `lookfor` command in R, allowing users to quickly search large datasets for variable names, labels, factor levels, and value labels.
+
+```{r}
+# Look for the keyword "south" in the dataset
+look_for(wages_data, "south") |> 
+  view()
+
+# Look for the keyword "e" in the dataset
+look_for(wages_data, "e") |> 
+  view()
+```
+
+
+### Handling Missing Values
+
+- `inspect_na()`: Quickly checks for missing data across a dataframe.
+
+- `fill_missing_values()`: Offers multiple imputation strategies for filling missing values.
+
+```{r}
+# Inspect missing data in the 'airquality' dataset
+inspect_na(airquality)
+```
+
+**Imputing Missing Values**
+
+Use `fill_missing_values()` to fill missing values with the mean, median, or other methods:
+
+```{r}
+# Impute missing values with the mean for numeric variables
+sample_iris <- tibble::tibble(
+  Sepal_Length = c(5.2, 5, 5.7, NA, 6.2, 6.7, 5.5),
+  Petal_Length = c(1.5, 1.4, 4.2, 1.4, NA, 5.8, 3.7),
+  Petal_Width = c(0.3, 0.2, 1.2, 0.2, 1.3, 1.8, NA),
+  Species = c("setosa", "setosa", "versicolor", "setosa", "virginica", "virginica", "setosa")
+)
+
+sample_iris
+
+# Fill missing values using mean for numeric variables
+result_df_mean <-  fill_missing_values(df, method = "mean")  
+```
+
+You can impute missing values for selected variable in the data fame by using the `selected_variables ` argument. For example, to impute missing values in the `Petal_Length`, and `Petal_Width` variables using the median method, you can do this:
+
+```{r}
+result_df_mean <- fill_missing_values(
+  df,
+  selected_variables = c("Petal_Length", "Petal_Width"),
+  method = "median"
+)
+
+```
+
+
+## Other Utility Functions
+
+### pull_out()
+
+`pull_out()` extracts or replaces parts of vectors, matrices, arrays, or lists. It works seamlessly with magrittr (`%>%`) or base (`|>`) operators.
+
+```{r}
+top_10_richest_nig <- c("Aliko Dangote", "Mike Adenuga", "Femi Otedola", "Arthur Eze", "Abdulsamad Rabiu", "Cletus Ibeto", "Orji Uzor Kalu", "ABC Orjiakor", "Jimoh Ibrahim", "Tony Elumelu")
+
+# Extract specific elements from the list
+top_10_richest_nig |> 
+  pull_out(c(1, 5, 2))
+
+# Exclude specific elements from the list
+top_10_richest_nig |>  
+  pull_out(-c(1, 5, 2))
+```
+
+
+
+### convert_to_date()
+
+`convert_to_date()` efficiently parses dates from various formats into `POSIXct` date objects, enabling smooth date handling and analysis.
+
+
+```{r}
+# Heterogeneous dates
+dates <- c(
+  44869, "22.09.2022", NA, "02/27/92", "01-19-2022",
+  "13-01-2022", "2023", "2023-2", 41750.2, 41751.99,
+  "11 07 2023", "2023-4"
+)
+
+# Convert to POSIXct or Date object
+convert_to_date(dates)
+
+# Convert date-time object to date object
+convert_to_date(lubridate::now())
+```
+
+Let's look at an example using data frame
+
+```{r}
+ogd_data <- read_excel_workbook("data/OGD.xlsx")
+
+ogd_data %>% 
+  head()
+
+# Convert to POSIXct or Date object
+modified_ogd_data <- ogd_data  %>% 
+  mutate(Date_format = convert_to_date(Date))
+
+modified_ogd_data %>% 
+  glimpse()
+```
+
+## Conclusion
+
+In this session, we've explored how to use **bulkreadr** to handle and import data from multiple sources, including Excel, CSV, Google Sheets, SPSS, and Stata. The package helps streamline the data import process, saving time and ensuring that your workflows are reproducible. We also covered essential data quality checks and strategies for handling missing values.
+
+Feel free to explore further, ask questions, or refer to the bulkreadr GitHub repository, <https://github.com/gbganalyst/bulkreadr> for more details.
+
+Thank you for attending the **R/Medicine 2025 Workshop**!

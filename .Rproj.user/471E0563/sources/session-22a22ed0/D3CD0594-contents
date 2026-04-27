@@ -23,7 +23,7 @@ Alternatively, you can install the development version from GitHub:
 
 ```r
 # install.packages("devtools")
-devtools::install_github("Ezekiel-Ogundepo/bulkreadr")
+devtools::install_github("gbganalyst/bulkreadr")
 ```
 
 ## 📂 Session Materials

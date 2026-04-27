@@ -26,11 +26,3 @@ Alternatively, you can install the development version from GitHub:
 devtools::install_github("gbganalyst/bulkreadr")
 ```
 
-## 📂 Session Materials
-
-This repository is organized as follows:
-
-* **`slides/`**: The Quarto presentation (`.qmd`) and compiled slides for the session.
-* **`scripts/`**: R scripts containing the live coding examples and data aggregation workflows.
-* **`data/`**: Sample datasets used during the demonstration.
-

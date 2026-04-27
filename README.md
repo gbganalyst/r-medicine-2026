@@ -26,3 +26,10 @@ Alternatively, you can install the development version from GitHub:
 devtools::install_github("gbganalyst/bulkreadr")
 ```
 
+## Session Materials
+
+This repository includes:
+
+- Slides <https://gbganalyst.github.io/r-medicine-2026/bulkreadr-slide>
+
+- Code examples <https://gbganalyst.github.io/r-medicine-2026/bulkreadr-practical-session>

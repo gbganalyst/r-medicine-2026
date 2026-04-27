@@ -24,7 +24,7 @@ format:
     show-slide-number: all
     highlight-style: rstudio_default-light.theme
     logo: "images/rmed.png"
-    footer: "[Slides are here](https://){target='_blank'}"  # complete the URL
+    footer: "🔗 **Slides:** [gbganalyst.github.io/r-medicine-2026/bulkreadr-slide](https://gbganalyst.github.io/r-medicine-2026/bulkreadr-slide){target='_blank'}"
     include-after-body: "images/clean_title_page.html"
 include-in-header:
   text: |
@@ -298,9 +298,12 @@ You can contribute to the development of this package by:
 
 - filing an issue if you detect a bug <https://github.com/gbganalyst/bulkreadr/issues>
 
-## Hands-on
+## Hands-on 
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/lab.png")
 ```
 
+::: {.footer}
+📦 **Code Repository:** [gbganalyst.github.io/r-medicine-2026](https://gbganalyst.github.io/r-medicine-2026/){target="_blank"}
+:::

@@ -3,7 +3,7 @@
     "path": "C:/Users/admin/Desktop/r-medicine-2026/bulkreadr-slide.qmd",
     "project_path": "bulkreadr-slide.qmd",
     "type": "quarto_markdown",
-    "hash": "0",
+    "hash": "4250786269",
     "contents": "",
     "dirty": false,
     "created": 1777291020374.0,
@@ -14,15 +14,15 @@
         "chunk_output_type": "console",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "1,85",
-        "scrollLine": "0"
+        "cursorPosition": "308,3",
+        "scrollLine": "299"
     },
     "folds": "",
-    "lastKnownWriteTime": 1777290859,
+    "lastKnownWriteTime": 1777296065,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1777290859,
+    "last_content_update": 1777296065158,
     "read_only": false,
     "read_only_alternatives": []
 }

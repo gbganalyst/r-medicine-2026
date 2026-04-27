@@ -26,7 +26,7 @@ Alternatively, you can install the development version from GitHub:
 devtools::install_github("gbganalyst/bulkreadr")
 ```
 
-## Session Materials
+## 📂 Session Materials
 
 This repository includes:
 

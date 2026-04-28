@@ -125,9 +125,11 @@ diamond_gsheet |> glimpse()
 
 Both functions import labelled data and convert labelled variables into factors, which is essential for effective data manipulation and analysis in R.
 
+```{=html}
 <!--# 
 Try haven for reading spss and stata data, then compare with bulkreadr functions.
 -->
+```
 
 ```{r}
 # Using haven to read SPSS data
